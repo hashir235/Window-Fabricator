@@ -131,22 +131,17 @@ public:
     }
 
 private:
-   float roundToMarketFeet(float inches) const {
+  float roundToMarketFeet(float inches) const {
     float ft = inches / 12.0f;
-    float decimalPart = ft - static_cast<int>(ft);
+    int fullFeet = static_cast<int>(ft);
 
-    if (decimalPart == 0.0f) {
-        return ft;  // Perfect foot, no rounding
-    }
+    // If inches divide perfectly → use as-is
+    if (fmod(inches, 12.0f) == 0.0f)
+        return fullFeet;
 
-    float inch = decimalPart * 12;
-
-    if (inch <= 6.0f)
-        return static_cast<int>(ft) + 0.6f;
-    else
-        return static_cast<int>(ft) + 1.0f;
+    // Otherwise round up to next full foot
+    return fullFeet + 1.0f;
 }
-
 };
 
 /////////////////////////////////////////////////////////
